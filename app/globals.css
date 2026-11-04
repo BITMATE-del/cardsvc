@@ -129,3 +129,10 @@
 .sz-hero-media>.sz-hero-promo:focus-visible{outline:3px solid #177F82;outline-offset:5px}
 @media(max-width:900px){.sz-hero-media{height:auto;margin:0 0 28px}.sz-hero-media>.sz-hero-promo{min-height:0;height:auto;aspect-ratio:1/1}}
 @media(max-width:650px){.sz-hero-media{height:auto;margin:0 0 22px}.sz-hero-media>.sz-hero-promo{min-height:0;height:auto;aspect-ratio:1/1}}
+
+
+/* HQ source image, real image element to avoid low-quality background rendition */
+.sz-hero-media>.sz-hero-promo{display:block;width:100%;height:auto;min-height:0;aspect-ratio:auto;background:none!important;border:0;overflow:hidden}
+.sz-hero-promo-img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain;image-rendering:auto}
+@media(max-width:900px){.sz-hero-media>.sz-hero-promo{aspect-ratio:auto;height:auto}}
+@media(max-width:650px){.sz-hero-media>.sz-hero-promo{aspect-ratio:auto;height:auto}}
