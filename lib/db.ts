@@ -1,1 +1,6 @@
-import {createClient} from '@supabase/supabase-js';import {isPinAdmin} from './admin-session';import {fallback,type Section} from './data';export function service(){const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;return url&&key?createClient(url,key,{auth:{autoRefreshToken:false,persistSession:false}}):null}export async function sections():Promise<Section[]>{const db=service();if(!db)return fallback;const r=await db.from('site_sections').select('*').eq('is_published',true).order('sort_order');return r.error||!r.data?.length?fallback:r.data as Section[]}export async function isAdmin(_token:string){return isPinAdmin()}
+import {neon} from '@neondatabase/serverless';
+import type {Section} from './data';
+import {isPinAdmin} from './admin-session';
+export const isAdmin=async (_token='')=>isPinAdmin();
+export function database(){const url=process.env.DATABASE_URL;return url?neon(url):null}
+export async function sections():Promise<Section[]>{const sql=database();if(!sql)return [];try{return await sql`select id,eyebrow,title,body,icon,sort_order,is_published from site_sections where is_published = true order by sort_order,id` as Section[]}catch{return []}}

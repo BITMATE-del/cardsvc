@@ -1,36 +1,28 @@
-# 스시자로 랜딩 · 관리자 CMS
+# 스시자로 · Neon PostgreSQL
 
-## 고객 페이지
-- `/` 고객용 소개 페이지
-- 가격표, 패키지, 배송, FAQ, 상담 접수 안내
+## 연결
+1. 스시자로 전용 Neon 프로젝트에서 PostgreSQL 데이터베이스 생성
+2. Neon SQL Editor에서 `neon/schema.sql` 실행
+3. Vercel `cardsvc` 프로젝트의 Production/Preview에 **DATABASE_URL** 환경변수 등록 (Neon의 pooled connection string)
+4. Redeploy
 
-## 관리자 접속
-- `/admin` 접속 → `/staff-login`으로 이동
-- Vercel 환경변수 `ADMIN_ACCESS_PIN`에 지정한 PIN을 입력
-- 서버 서명 쿠키를 사용하며, PIN은 클라이언트 소스에 포함하지 않음
-- `ADMIN_SESSION_SECRET`은 32자 이상 임의 난수로 설정
+## 관리자
+- `/admin` : 접속 암호 `ADMIN_ACCESS_PIN` (현재 Vercel에 9292 설정)
+- 홈페이지 문구 편집: 178개 항목 검색, 수정, 저장
+- 안내 카드 추가·수정·삭제
+- 상담 접수 목록 조회 및 신규/상담중/완료 관리
+- 기존 관리자 쿠키 인증 유지
 
-## 관리자 메뉴
-- 홈페이지 문구: 제목, 본문, 가격표, 상단 메뉴, 상담 문구 등 직접 수정
-- 안내 카드: 기존 등록·편집
-- 상담 내역: 신규/상담중/완료 상태 관리
-
-## 문구 저장 준비 (필수)
-현재 소스코드는 기본 문구를 내장합니다. 관리자에서 **변경 내용 저장**을 사용하려면, 이 프로젝트 전용 Supabase 연결이 필요합니다.
-
-1. Supabase 프로젝트 생성
-2. `supabase/schema.sql`, `supabase/consultations.sql`, `supabase/landing-texts.sql`을 실행
-3. Vercel에 `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 환경변수 등록
-4. 재배포 후 `/admin` 문구 수정과 저장 테스트
-
-기존에 BITMATE 등 다른 서비스에서 사용하는 데이터베이스를 공유하지 마세요. 서비스 역할 키는 서버 환경변수에만 설정합니다.
+## 환경변수
+- `DATABASE_URL`: Neon 접속 문자열 (**서버 전용**, NEXT_PUBLIC 접두사 금지)
+- `ADMIN_ACCESS_PIN`: 관리자 암호
+- `ADMIN_SESSION_SECRET`: 관리자 세션 서명 키
 
 ## 개발
-```sh
+```bash
 npm install
 npm run typecheck
 npm run build
-npm run dev
 ```
 
-> 4자리 관리자 PIN은 추측될 수 있으므로 운영 환경에서는 더 긴 비밀번호와 별도의 접근 제한을 권장합니다.
+기존 다른 서비스의 Neon 데이터베이스를 재사용하지 않고, 스시자로 프로젝트에 별도 DB를 연결하는 것이 안전합니다.
