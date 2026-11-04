@@ -1,0 +1,1 @@
+import {NextResponse} from 'next/server';import {ADMIN_COOKIE} from '@/lib/admin-session';export async function POST(){const r=NextResponse.json({ok:true});r.cookies.set(ADMIN_COOKIE,'',{maxAge:0,path:'/',httpOnly:true,sameSite:'strict',secure:process.env.NODE_ENV==='production'});return r}

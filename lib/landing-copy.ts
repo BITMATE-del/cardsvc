@@ -1,0 +1,2 @@
+import {service} from './db';import {LANDING_DEFAULTS} from './landing-fields';
+export async function loadLandingCopy():Promise<Record<string,string>>{const defaults={...LANDING_DEFAULTS};const db=service();if(!db)return defaults;const r=await db.from('site_copy').select('key,value').limit(1000);if(r.error||!r.data)return defaults;for(const row of r.data){if(typeof row.key==='string'&&typeof row.value==='string')defaults[row.key]=row.value}return defaults}
