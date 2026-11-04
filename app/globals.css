@@ -97,3 +97,26 @@
 .sz-admin-savebar span{font-size:13px;color:#45616c}
 .sz-admin-savebar button{white-space:nowrap;margin:0}
 @media(max-width:650px){.sz-admin-text-row{grid-template-columns:1fr;gap:8px;padding:13px}.sz-admin-controls{align-items:stretch;flex-direction:column}.sz-admin-controls>label,.sz-admin-controls select{width:100%}.sz-admin-savebar{bottom:0;margin:15px -12px 0;flex-direction:column;align-items:stretch}.sz-admin-tabs a{font-size:12px}.sz-admin-summary{flex-direction:column}}
+
+/* Customer reviews */
+.sz-review-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+.sz-review-list{display:grid;gap:13px}
+.sz-review-item,.sz-review-empty{border:1px solid #dce5e7;background:white;padding:28px}
+.sz-review-item-top{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.sz-review-stars{color:#177f82;letter-spacing:3px;font-size:20px}
+.sz-review-item-top small,.sz-review-item footer{color:#71858c;font-size:12px}
+.sz-review-item h3{font-size:19px;letter-spacing:-.04em;color:#102b40;margin:17px 0 12px}
+.sz-review-item p{font-size:14px;color:#536d79;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
+.sz-review-empty{min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#71858c}
+.sz-review-empty h3{color:#102b40;margin-bottom:2px}
+.sz-review-form{padding:34px;background:#f5f8f8;border:1px solid #dce5e7}
+.sz-review-form h3{font-size:24px;color:#102b40;margin:12px 0}
+.sz-review-form>p{font-size:14px;color:#647782;margin-bottom:24px}
+.sz-review-form label{display:block;font-size:13px;font-weight:700;color:#102b40;margin-bottom:17px}
+.sz-review-form input,.sz-review-form select,.sz-review-form textarea{display:block;width:100%;margin-top:8px;border:1px solid #dce5e7;border-radius:4px;padding:13px;font-size:14px;background:white}
+.sz-review-form textarea{min-height:130px;resize:vertical}
+.sz-form-success{color:#177f82}
+.sz-review-admin-row{display:flex;flex-direction:column;gap:8px}
+.sz-review-admin-row>header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sz-review-admin-row h3{margin:4px 0}
+@media(max-width:850px){.sz-review-layout{grid-template-columns:1fr}.sz-review-form{padding:24px}}
