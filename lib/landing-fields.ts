@@ -1,5 +1,14 @@
 /** 관리자 문구 편집 기본값. 기존 화면 문구를 유지합니다. */
 export const LANDING_DEFAULTS: Record<string,string> = {
+  "page_photo_aria": "깔끔한 일본 도심 건축 이미지",
+  "header_logo_aria": "스시자로 홈",
+  "form_err_request": "접수에 실패했습니다.",
+  "form_err_consent": "개인정보 수집 동의가 필요합니다.",
+  "form_status_submit": "상담 접수하기",
+  "form_status_sending": "접수 중...",
+  "form_placeholder_message": "궁금한 내용을 자유롭게 남겨주세요.",
+  "form_placeholder_phone": "010-0000-0000",
+  "form_placeholder_name": "성함을 입력해 주세요",
   "page_001": "SUSHIJARO · JAPAN HEALTHCARE",
   "page_002": "스시자로,",
   "page_003": "일본 공동구매 안내.",
@@ -170,6 +179,15 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "price_6_2": "360,000원",
   "price_6_3": "최고 용량",
 };
+  // 성함 입력칸 안내
+  // 연락처 입력 예시
+  // 문의내용 입력 안내
+  // 상담 접수 중 버튼
+  // 상담 접수 버튼
+  // 개인정보 동의 안내
+  // 접수 실패 안내
+  // 로고 접근성 안내
+  // 대표 사진 설명
 export type LandingField={key:string;group:string;label:string;defaultValue:string};
 export const LANDING_FIELDS:LandingField[]=[
   {
@@ -1185,5 +1203,14 @@ export const LANDING_FIELDS:LandingField[]=[
     "group": "가격표",
     "label": "6행 · 설명",
     "defaultValue": "최고 용량"
-  }
+  },
+  {"key":"form_placeholder_name","group":"상담 접수","label":"성함 입력칸 안내","defaultValue":"성함을 입력해 주세요"},
+  {"key":"form_placeholder_phone","group":"상담 접수","label":"연락처 입력 예시","defaultValue":"010-0000-0000"},
+  {"key":"form_placeholder_message","group":"상담 접수","label":"문의내용 입력 안내","defaultValue":"궁금한 내용을 자유롭게 남겨주세요."},
+  {"key":"form_status_sending","group":"상담 접수","label":"상담 접수 중 버튼","defaultValue":"접수 중..."},
+  {"key":"form_status_submit","group":"상담 접수","label":"상담 접수 버튼","defaultValue":"상담 접수하기"},
+  {"key":"form_err_consent","group":"상담 접수","label":"개인정보 동의 안내","defaultValue":"개인정보 수집 동의가 필요합니다."},
+  {"key":"form_err_request","group":"상담 접수","label":"접수 실패 안내","defaultValue":"접수에 실패했습니다."},
+  {"key":"header_logo_aria","group":"상단 메뉴","label":"로고 접근성 안내","defaultValue":"스시자로 홈"},
+  {"key":"page_photo_aria","group":"랜딩 본문","label":"대표 사진 설명","defaultValue":"깔끔한 일본 도심 건축 이미지"}
 ];
