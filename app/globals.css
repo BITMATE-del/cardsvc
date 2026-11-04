@@ -45,3 +45,22 @@
  .sz-features h3,.sz-delivery h3{margin-bottom:9px;}
  .sz-hero-actions{margin-top:25px;margin-bottom:26px;}
 }
+
+/* Detailed explanation blocks preserve substance without oversized paragraphs */
+.sz-features article p,.sz-delivery article p{max-width:none;line-height:1.85;font-size:14px;text-wrap:pretty;word-break:keep-all}
+.sz-features article,.sz-delivery article{min-height:315px}
+.sz-section-heading>p{max-width:480px;line-height:1.85;text-wrap:pretty}
+.sz-package-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sz-package-grid article{border:1px solid #dce5e7;padding:28px;background:#fff}
+.sz-package-grid small{font-size:11px;color:#177f82;font-weight:800;letter-spacing:.08em}
+.sz-package-grid h3{font-size:21px;color:#102b40;margin:17px 0 8px;letter-spacing:-.035em}
+.sz-package-grid p{color:#647782;font-size:13px;line-height:1.8;margin:0}
+.sz-detail-note{margin-top:20px;border-left:3px solid #177f82;background:#f5f8f8;padding:24px 30px}
+.sz-detail-note b{font-size:15px;color:#102b40}
+.sz-detail-note p{color:#647782;line-height:1.85;font-size:14px;margin:10px 0 0;max-width:880px}
+.sz-questions{border-top:2px solid #102b40}
+.sz-questions details{border-bottom:1px solid #dce5e7;padding:23px 8px}
+.sz-questions summary{font-size:17px;font-weight:700;color:#102b40;cursor:pointer}
+.sz-questions details p{max-width:800px;line-height:1.9;color:#647782;font-size:14px;margin-bottom:0}
+@media(max-width:900px){.sz-package-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sz-section-heading>p{max-width:100%}}
+@media(max-width:650px){.sz-package-grid{grid-template-columns:1fr}.sz-features article,.sz-delivery article{min-height:0}.sz-detail-note{padding:20px}.sz-questions summary{font-size:15px}}
