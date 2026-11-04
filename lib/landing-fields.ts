@@ -1,5 +1,6 @@
 /** 관리자 문구 편집 기본값. 기존 화면 문구를 유지합니다. */
 export const LANDING_DEFAULTS: Record<string,string> = {
+  "header_reviews": "후기",
   "page_photo_aria": "깔끔한 일본 도심 건축 이미지",
   "header_logo_aria": "스시자로 홈",
   "form_err_request": "접수에 실패했습니다.",
@@ -1212,5 +1213,6 @@ export const LANDING_FIELDS:LandingField[]=[
   {"key":"form_err_consent","group":"상담 접수","label":"개인정보 동의 안내","defaultValue":"개인정보 수집 동의가 필요합니다."},
   {"key":"form_err_request","group":"상담 접수","label":"접수 실패 안내","defaultValue":"접수에 실패했습니다."},
   {"key":"header_logo_aria","group":"상단 메뉴","label":"로고 접근성 안내","defaultValue":"스시자로 홈"},
-  {"key":"page_photo_aria","group":"랜딩 본문","label":"대표 사진 설명","defaultValue":"깔끔한 일본 도심 건축 이미지"}
+  {"key":"page_photo_aria","group":"랜딩 본문","label":"대표 사진 설명","defaultValue":"깔끔한 일본 도심 건축 이미지"},
+  {"key":"header_reviews","group":"상단 메뉴","label":"후기 메뉴","defaultValue":"후기"}
 ];
