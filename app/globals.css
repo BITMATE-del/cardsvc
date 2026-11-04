@@ -64,3 +64,17 @@
 .sz-questions details p{max-width:800px;line-height:1.9;color:#647782;font-size:14px;margin-bottom:0}
 @media(max-width:900px){.sz-package-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sz-section-heading>p{max-width:100%}}
 @media(max-width:650px){.sz-package-grid{grid-template-columns:1fr}.sz-features article,.sz-delivery article{min-height:0}.sz-detail-note{padding:20px}.sz-questions summary{font-size:15px}}
+
+/* Detailed customer sections */
+.sz-medical-information{border-top:1px solid #e5eded}
+.sz-medical-grid,.sz-payment-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.sz-medical-grid article,.sz-payment-layout article{padding:34px;background:#f5f8f8;border:1px solid #dce5e7;min-height:275px}
+.sz-medical-index,.sz-payment-layout article>span{color:#177f82;font-size:11px;font-weight:800;letter-spacing:.08em}
+.sz-medical-grid h3,.sz-payment-layout h3{font-size:20px;line-height:1.5;letter-spacing:-.045em;color:#102b40;margin:28px 0 12px}
+.sz-medical-grid p,.sz-payment-layout p{font-size:14px;line-height:1.85;color:#647782;margin:0;word-break:keep-all}
+.sz-schedule-strip{padding:40px 0;background:#e3f1ee}
+.sz-schedule-strip>.container{display:flex;align-items:center;justify-content:space-between;gap:26px}
+.sz-schedule-strip h2{font-size:24px;color:#102b40;letter-spacing:-.04em;margin:0 0 6px}
+.sz-schedule-strip p{font-size:14px;color:#59737c;line-height:1.8;margin:0;max-width:580px}
+.sz-schedule-strip a{white-space:nowrap;color:#0c696c;font-size:14px;font-weight:800;display:flex;align-items:center;gap:9px}
+@media(max-width:800px){.sz-medical-grid,.sz-payment-layout{grid-template-columns:1fr}.sz-medical-grid article,.sz-payment-layout article{min-height:0}.sz-schedule-strip>.container{align-items:flex-start;flex-direction:column}.sz-schedule-strip{padding:34px 0}}
