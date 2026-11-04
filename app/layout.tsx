@@ -1,0 +1,1 @@
+import './globals.css';import type {Metadata} from 'next';export const metadata:Metadata={title:'스시자로 | 올바른 건강정보',description:'처방의약품 마운자로에 관한 안전·보관·의료 상담 정보'};export default function Layout({children}:{children:React.ReactNode}){return <html lang="ko"><body>{children}</body></html>}
