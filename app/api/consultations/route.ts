@@ -1,0 +1,10 @@
+import {NextRequest,NextResponse} from 'next/server';import {service,isAdmin} from '@/lib/db';export const dynamic='force-dynamic';
+function json(message:string,status:number){return NextResponse.json({error:message},{status})}
+export async function POST(req:NextRequest){let data:Record<string,unknown>;try{data=await req.json()}catch{return json('입력 내용을 확인해 주세요.',400)}
+if(data.website)return NextResponse.json({ok:true});if(data.agree!==true)return json('개인정보 수집 동의가 필요합니다.',400);
+const name=typeof data.name==='string'?data.name.trim():'',phone=typeof data.phone==='string'?data.phone.trim():'',message=typeof data.message==='string'?data.message.trim():'';
+if(name.length<2||name.length>40||!/^[-+() 0-9]{8,20}$/.test(phone)||message.length<5||message.length>1000)return json('입력 항목을 확인해 주세요.',400);
+const db=service();if(!db)return json('접수 서비스가 준비되지 않았습니다.',503);
+const result=await db.from('consultations').insert({name,phone,message,status:'new'});if(result.error)return json('접수에 실패했습니다.',503);return NextResponse.json({ok:true},{status:201})}
+export async function GET(req:NextRequest){const token=req.headers.get('authorization')?.replace(/^Bearer /i,'')||'';if(!await isAdmin(token))return json('접근 권한이 없습니다.',403);const db=service();if(!db)return json('서비스 설정이 필요합니다.',503);const r=await db.from('consultations').select('id,name,phone,message,status,created_at').order('created_at',{ascending:false}).limit(150);return r.error?json('조회 실패',500):NextResponse.json(r.data)}
+export async function PATCH(req:NextRequest){const token=req.headers.get('authorization')?.replace(/^Bearer /i,'')||'';if(!await isAdmin(token))return json('접근 권한이 없습니다.',403);let d:Record<string,unknown>;try{d=await req.json()}catch{return json('잘못된 요청',400)}if(typeof d.id!=='string'||!['new','contacted','closed'].includes(String(d.status)))return json('입력 오류',400);const db=service();if(!db)return json('서비스 설정이 필요합니다.',503);const r=await db.from('consultations').update({status:d.status}).eq('id',d.id);return r.error?json('저장 실패',500):NextResponse.json({ok:true})}
