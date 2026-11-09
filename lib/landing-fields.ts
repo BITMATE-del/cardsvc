@@ -5,7 +5,7 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "header_logo_aria": "스시자로 홈",
   "form_err_request": "접수에 실패했습니다.",
   "form_err_consent": "개인정보 수집 동의가 필요합니다.",
-  "form_status_submit": "상담 접수하기",
+  "form_status_submit": "주문서 접수하기",
   "form_status_sending": "접수 중...",
   "form_placeholder_message": "궁금한 내용을 자유롭게 남겨주세요.",
   "form_placeholder_phone": "010-0000-0000",
@@ -14,7 +14,7 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "page_002": "스시자로,",
   "page_003": "일본 공동구매 안내.",
   "page_004": "일본 가격과 패키지 구성부터 콜드체인 배송, 통관 관련 정보와 1:1 상담까지. 스시자로의 주요 서비스를 한눈에 살펴보세요.",
-  "page_005": "상담 접수하기",
+  "page_005": "주문 접수하기",
   "page_006": "가격 안내 보기",
   "page_007": "한눈에 보는 가격",
   "page_008": "간편 상담 접수",
@@ -24,7 +24,7 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "page_012": "단계별 구성",
   "page_013": "보관 및 배송 안내",
   "page_014": "편리한 서비스 안내",
-  "page_015": "1:1 상담 접수",
+  "page_015": "주문서 접수",
   "page_016": "01 / WHY SUSHIJARO",
   "page_017": "왜 스시자로일까요?",
   "page_018": "일본의 의약품 가격 제도와 환율은 국내 가격과 차이가 생기는 요인입니다. 치료 정보와 서비스 구성을 함께 확인해 보세요.",
@@ -44,7 +44,7 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "page_032": "4주 기준 참고 가격",
   "page_033": "구분",
   "page_034": "콜드체인 배송비: 별도 30,000원",
-  "page_035": "상담 접수하기",
+  "page_035": "주문 접수하기",
   "page_036": "04 / PACKAGE STRUCTURE",
   "page_037": "패키지 구성 안내",
   "page_038": "인접한 두 용량을 묶은 패키지 구성을 안내합니다. 각 조합을 한눈에 확인해 보세요.",
@@ -115,35 +115,35 @@ export const LANDING_DEFAULTS: Record<string,string> = {
   "page_103": "안내된 냉장 배송비는 30,000원입니다. 구체적인 비용 적용 방식은 상담으로 문의해 주세요.",
   "page_104": "배송 기간은 얼마나 예상하나요?",
   "page_105": "예상 일정은 약 14일입니다. 현지 출고 및 운송 상황에 따라 달라질 수 있습니다.",
-  "page_106": "상담은 어떻게 접수하나요?",
-  "page_107": "화면 하단의 상담 접수란에 성함, 연락처, 문의 내용을 남겨주세요.",
+  "page_106": "주문서는 어떻게 접수하나요?",
+  "page_107": "화면 하단에서 이름, 배송지, 연락처와 희망 용량을 선택하여 주문서를 접수할 수 있습니다.",
   "page_108": "GROUP SCHEDULE",
   "page_109": "2주 단위 일정 안내",
   "page_110": "공동구매 안내는 2주 단위로 진행되는 일정입니다. 회차별 접수 기간과 수량은 상담으로 확인하세요.",
   "page_111": "일정 문의하기",
-  "page_112": "08 / CONSULTATION",
-  "page_113": "궁금한 내용은",
-  "page_114": "편하게 문의하세요.",
-  "page_115": "가격, 패키지 구성, 냉장 배송, 통관과 결제 방식까지 궁금한 내용을 편하게 문의하세요.",
-  "page_116": "지금 상담 접수하기",
-  "page_117": "09 / CONTACT US",
-  "page_118": "1:1 상담 접수",
-  "page_119": "성함과 연락처, 문의 내용을 입력해 주세요. 가격과 배송, 결제 방식 등에 관한 상담을 접수할 수 있습니다.",
+  "page_112": "08 / ORDER REQUEST",
+  "page_113": "희망 용량을 선택하고",
+  "page_114": "주문서를 접수하세요.",
+  "page_115": "이름과 배송지, 연락처 및 희망 용량을 남겨주시면 담당자가 접수 내용을 확인합니다.",
+  "page_116": "주문 접수하기",
+  "page_117": "09 / ORDER REQUEST",
+  "page_118": "주문서 접수",
+  "page_119": "필요한 정보를 입력하고 희망 용량을 선택해 주세요.",
   "page_120": "스시자로",
   "page_121": "SUSHIJARO",
   "page_122": "스시자로 서비스 안내",
   "page_123": "소개",
   "page_124": "가격",
   "page_125": "배송",
-  "page_126": "상담 접수",
+  "page_126": "주문 접수",
   "page_127": "© 2026 SUSHIJARO. All rights reserved.",
   "header_001": "스시자로",
   "header_002": "SUSHIJARO",
   "header_003": "서비스 소개",
   "header_004": "가격 안내",
   "header_005": "배송 안내",
-  "header_006": "상담 접수",
-  "header_007": "상담 접수",
+  "header_006": "주문 접수",
+  "header_007": "주문 접수",
   "form_001": "PERSONAL CONSULTATION",
   "form_002": "간단한 정보 입력으로",
   "form_003": "상담을 시작하세요.",
@@ -219,7 +219,7 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_005",
     "group": "랜딩 본문",
     "label": "상담 접수하기",
-    "defaultValue": "상담 접수하기"
+    "defaultValue": "주문 접수하기"
   },
   {
     "key": "page_006",
@@ -279,7 +279,7 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_015",
     "group": "랜딩 본문",
     "label": "1:1 상담 접수",
-    "defaultValue": "1:1 상담 접수"
+    "defaultValue": "주문서 접수"
   },
   {
     "key": "page_016",
@@ -399,7 +399,7 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_035",
     "group": "랜딩 본문",
     "label": "상담 접수하기",
-    "defaultValue": "상담 접수하기"
+    "defaultValue": "주문 접수하기"
   },
   {
     "key": "page_036",
@@ -825,13 +825,13 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_106",
     "group": "랜딩 본문",
     "label": "상담은 어떻게 접수하나요?",
-    "defaultValue": "상담은 어떻게 접수하나요?"
+    "defaultValue": "주문서는 어떻게 접수하나요?"
   },
   {
     "key": "page_107",
     "group": "랜딩 본문",
     "label": "화면 하단의 상담 접수란에 성함, 연락처, 문의 내용을 남겨주세요.",
-    "defaultValue": "화면 하단의 상담 접수란에 성함, 연락처, 문의 내용을 남겨주세요."
+    "defaultValue": "화면 하단에서 이름, 배송지, 연락처와 희망 용량을 선택하여 주문서를 접수할 수 있습니다."
   },
   {
     "key": "page_108",
@@ -861,49 +861,49 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_112",
     "group": "랜딩 본문",
     "label": "08 / CONSULTATION",
-    "defaultValue": "08 / CONSULTATION"
+    "defaultValue": "08 / ORDER REQUEST"
   },
   {
     "key": "page_113",
     "group": "랜딩 본문",
     "label": "궁금한 내용은",
-    "defaultValue": "궁금한 내용은"
+    "defaultValue": "희망 용량을 선택하고"
   },
   {
     "key": "page_114",
     "group": "랜딩 본문",
     "label": "편하게 문의하세요.",
-    "defaultValue": "편하게 문의하세요."
+    "defaultValue": "주문서를 접수하세요."
   },
   {
     "key": "page_115",
     "group": "랜딩 본문",
     "label": "가격, 패키지 구성, 냉장 배송, 통관과 결제 방식까지 궁금한 내용을 편하게 문의하세요.",
-    "defaultValue": "가격, 패키지 구성, 냉장 배송, 통관과 결제 방식까지 궁금한 내용을 편하게 문의하세요."
+    "defaultValue": "이름과 배송지, 연락처 및 희망 용량을 남겨주시면 담당자가 접수 내용을 확인합니다."
   },
   {
     "key": "page_116",
     "group": "랜딩 본문",
     "label": "지금 상담 접수하기",
-    "defaultValue": "지금 상담 접수하기"
+    "defaultValue": "주문 접수하기"
   },
   {
     "key": "page_117",
     "group": "랜딩 본문",
     "label": "09 / CONTACT US",
-    "defaultValue": "09 / CONTACT US"
+    "defaultValue": "09 / ORDER REQUEST"
   },
   {
     "key": "page_118",
     "group": "랜딩 본문",
     "label": "1:1 상담 접수",
-    "defaultValue": "1:1 상담 접수"
+    "defaultValue": "주문서 접수"
   },
   {
     "key": "page_119",
     "group": "랜딩 본문",
     "label": "성함과 연락처, 문의 내용을 입력해 주세요. 가격과 배송, 결제 방식 등에 관한 상담을 접수할 수 …",
-    "defaultValue": "성함과 연락처, 문의 내용을 입력해 주세요. 가격과 배송, 결제 방식 등에 관한 상담을 접수할 수 있습니다."
+    "defaultValue": "필요한 정보를 입력하고 희망 용량을 선택해 주세요."
   },
   {
     "key": "page_120",
@@ -945,7 +945,7 @@ export const LANDING_FIELDS:LandingField[]=[
     "key": "page_126",
     "group": "랜딩 본문",
     "label": "상담 접수",
-    "defaultValue": "상담 접수"
+    "defaultValue": "주문 접수"
   },
   {
     "key": "page_127",

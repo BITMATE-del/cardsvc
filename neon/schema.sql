@@ -44,3 +44,9 @@ create index if not exists idx_customer_reviews_status on customer_reviews(statu
 
 -- Customer-facing review date override; original created_at is preserved for audit.
 alter table customer_reviews add column if not exists display_date date;
+
+-- Non-transactional order request metadata (legacy consultations preserved)
+alter table consultations add column if not exists delivery_address text;
+alter table consultations add column if not exists selected_dose text;
+alter table consultations add column if not exists reference_price integer;
+alter table consultations add column if not exists request_type text not null default 'consultation';

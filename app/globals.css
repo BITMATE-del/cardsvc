@@ -143,3 +143,19 @@
 .sz-review-date-editor input{padding:10px 12px;border:1px solid #dce5e7;border-radius:5px;color:#102b40;min-height:42px}
 .sz-review-date-editor button{min-height:42px;padding:9px 15px}
 @media(max-width:600px){.sz-review-date-editor{align-items:stretch}.sz-review-date-editor label,.sz-review-date-editor button{width:100%}}
+
+/* Order-intake form */
+.sz-order-address{min-height:90px!important}
+.sz-dose-fieldset{border:0;padding:0;margin:0 0 20px;min-width:0}
+.sz-dose-fieldset legend{font-size:14px;font-weight:800;color:#102b40;margin-bottom:13px}
+.sz-dose-fieldset legend>span{color:#177f82}
+.sz-dose-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.sz-consult-form-panel .sz-dose-option{margin:0;display:flex;align-items:center;gap:10px;border:1px solid #dce5e7;border-radius:5px;padding:15px 13px;cursor:pointer;font-size:14px;background:white}
+.sz-consult-form-panel .sz-dose-option.selected{border-color:#177f82;background:#f0f8f6}
+.sz-dose-option input{accent-color:#177f82;flex:none}
+.sz-dose-option span{display:flex;flex-direction:column;gap:3px;color:#102b40}
+.sz-dose-option small{font-size:11px;font-weight:400;color:#647782}
+.sz-dose-option b{margin-left:auto;white-space:nowrap;font-size:14px;color:#102b40}
+.sz-dose-note{color:#647782;font-size:12px;line-height:1.65;margin:12px 0}
+.sz-order-notice{border-left:3px solid #177f82;background:#f5f8f8;padding:14px 16px;line-height:1.7;font-size:13px;color:#314e5c;margin:16px 0 22px}
+@media(max-width:600px){.sz-dose-options{grid-template-columns:1fr}}
