@@ -101,6 +101,7 @@ export function ConsultationForm({values}:{values:Record<string,string>}){
      <p className="sz-dose-note">표시 금액은 4주 기준이며, 배송비 30,000원은 별도입니다.</p>
      <p className="sz-order-notice">주문서 접수 후 결제 진행 방법과 링크는 별도로 안내됩니다.</p>
      <label className="sz-privacy"><input type="checkbox" checked={agree} onChange={e=>setAgree(e.target.checked)}/><span>주문서 확인 및 연락을 위한 개인정보(이름·연락처·배송지·선택 용량) 수집·이용에 동의합니다. 접수 정보는 90일간 보관합니다.</span></label>
+     <p className="sz-pg-notice" role="note">PG 카드결제 링크는 결제사 자동발송 연동 완료 후 주문서 접수와 동시에 발송됩니다.</p>
      {error&&<p className="sz-form-error" role="alert">{error}</p>}
      <button type="submit" className="sz-submit" disabled={busy}>{busy?'접수 중...':'주문서 접수하기'} <ArrowUpRight size={18}/></button>
     </form>}

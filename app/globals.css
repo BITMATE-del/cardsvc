@@ -184,3 +184,5 @@
 .sz-address-modal .sz-postcode-embed{height:min(68dvh,550px);min-height:310px;width:100%}
 .sz-address-modal .sz-form-error{margin:10px 18px}
 @media(max-width:600px){.sz-address-search-row{grid-template-columns:minmax(0,1fr) 124px}.sz-selected-price{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sz-address-modal-backdrop{padding:8px}.sz-address-modal .sz-postcode-embed{height:70dvh;min-height:300px}}
+
+.sz-consult-form-panel .sz-pg-notice{margin:0 0 18px;padding:12px 14px;border-left:3px solid #177f82;background:#f5f8f8;color:#294e59;font-size:13px;font-weight:600;line-height:1.7;word-break:keep-all}
