@@ -21,9 +21,12 @@ function ensurePostcode():Promise<void>{
 const doses=[['2.5mg',95000],['5mg',130000],['7.5mg',190000],['10mg',250000],['12.5mg',300000],['15mg',360000]] as const;
 const DELIVERY_FEE=30000;
 export function ConsultationForm({values}:{values:Record<string,string>}){
- const [name,setName]=useState(''),[phone,setPhone]=useState(''),[zip,setZip]=useState(''),[road,setRoad]=useState(''),[detail,setDetail]=useState(''),[dose,setDose]=useState(''),[agree,setAgree]=useState(false),[busy,setBusy]=useState(false),[done,setDone]=useState(false),[error,setError]=useState(''),[addressOpen,setAddressOpen]=useState(false),[addressError,setAddressError]=useState('');
+ const [name,setName]=useState(''),[phone,setPhone]=useState(''),[zip,setZip]=useState(''),[road,setRoad]=useState(''),[detail,setDetail]=useState(''),[quantities,setQuantities]=useState<Record<string,number>>({}),[agree,setAgree]=useState(false),[busy,setBusy]=useState(false),[done,setDone]=useState(false),[error,setError]=useState(''),[addressOpen,setAddressOpen]=useState(false),[addressError,setAddressError]=useState('');
  const addressHost=useRef<HTMLDivElement>(null),detailInput=useRef<HTMLInputElement>(null);
- const selected=doses.find(([item])=>item===dose);
+ const orderItems=doses.map(([dose,price])=>({dose,quantity:quantities[dose]||0,unitPrice:price})).filter(item=>item.quantity>0);
+ const subtotal=orderItems.reduce((sum,item)=>sum+item.unitPrice*item.quantity,0);
+ const total=subtotal+(orderItems.length?DELIVERY_FEE:0);
+ const itemCount=orderItems.reduce((sum,item)=>sum+item.quantity,0);
  useEffect(()=>{
    if(!addressOpen)return;
    let canceled=false;
@@ -50,15 +53,15 @@ export function ConsultationForm({values}:{values:Record<string,string>}){
  async function submit(e:FormEvent){
    e.preventDefault();setError('');
    if(!zip||!road||!detail.trim()){setError('주소 검색 후 상세주소까지 입력해 주세요.');return}
-   if(!dose){setError('희망 용량을 선택해 주세요.');return}
+   if(!orderItems.length){setError('용량별 수량을 1개 이상 선택해 주세요.');return}
    if(!agree){setError('개인정보 수집·이용 동의가 필요합니다.');return}
    setBusy(true);
    try{
      const deliveryAddress='('+zip+') '+road+' '+detail.trim();
-     const res=await fetch('/api/consultations',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,phone,deliveryAddress,dose,agree,website:''})});
+     const res=await fetch('/api/consultations',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,phone,deliveryAddress,items:orderItems.map(({dose,quantity})=>({dose,quantity})),agree,website:''})});
      const j=await res.json();
      if(!res.ok)throw new Error(j.error||'접수에 실패했습니다.');
-     setDone(true);setName('');setPhone('');setZip('');setRoad('');setDetail('');setDose('');setAgree(false);
+     setDone(true);setName('');setPhone('');setZip('');setRoad('');setDetail('');setQuantities({});setAgree(false);
    }catch(e){setError(e instanceof Error?e.message:'접수에 실패했습니다.')}finally{setBusy(false)}
  }
  return <>
@@ -87,18 +90,25 @@ export function ConsultationForm({values}:{values:Record<string,string>}){
       <input aria-label="도로명주소" readOnly required value={road} placeholder="주소 검색 버튼으로 도로명주소를 선택하세요." onClick={()=>setAddressOpen(true)}/>
       <input ref={detailInput} aria-label="상세주소" required maxLength={100} autoComplete="address-line2" value={detail} onChange={e=>setDetail(e.target.value)} placeholder="상세주소 (동·호수, 건물명 등)"/>
      </div>
-     <label className="sz-dose-select-label" htmlFor="sz-dose-select">희망 용량 단계 <span>*</span>
-      <select required id="sz-dose-select" value={dose} onChange={e=>setDose(e.target.value)}>
-       <option value="" disabled>용량을 선택해 주세요.</option>
-       {doses.map(([item,price],i)=><option key={item} value={item}>{item}{i===0?' (시작 용량)':i===5?' (최고 용량)':''} — {price.toLocaleString('ko-KR')}원</option>)}
-      </select>
-     </label>
-     {selected&&<div className="sz-selected-price" aria-live="polite">
-      <span>선택한 용량 <strong>{selected[0]}</strong></span>
-      <span>4주 기준 <strong>{selected[1].toLocaleString('ko-KR')}원</strong></span>
-      <span>별도 배송비 <strong>{DELIVERY_FEE.toLocaleString('ko-KR')}원</strong></span>
-     </div>}
-     <p className="sz-dose-note">표시 금액은 4주 기준이며, 배송비 30,000원은 별도입니다.</p>
+     <fieldset className="sz-order-items-field">
+      <legend>용량별 주문 수량 <span>*</span></legend>
+      <p className="sz-order-items-hint">원하는 용량을 각각 선택하세요. 여러 용량을 함께 신청할 수 있습니다.</p>
+      <div className="sz-order-item-list">{doses.map(([item,price],i)=><div className="sz-order-item-row" key={item}>
+       <div className="sz-order-item-name"><strong>{item}</strong>{i===0&&<small>시작 용량</small>}{i===5&&<small>최고 용량</small>}<span>{price.toLocaleString('ko-KR')}원 / 4주</span></div>
+       <label className="sz-order-item-quantity" htmlFor={'sz-qty-'+item}>수량
+        <select id={'sz-qty-'+item} value={quantities[item]||0} onChange={e=>setQuantities(prev=>({...prev,[item]:Number(e.target.value)}))}>
+         {Array.from({length:11},(_,q)=><option key={q} value={q}>{q===0?'선택 안 함':q+'개'}</option>)}
+        </select>
+       </label>
+      </div>)}</div>
+     </fieldset>
+     <div className="sz-order-total" aria-live="polite">
+       <div><span>선택 수량</span><strong>{itemCount}개</strong></div>
+       <div><span>상품 합계</span><strong>{subtotal.toLocaleString('ko-KR')}원</strong></div>
+       <div><span>배송비 (주문 1건 기준)</span><strong>{orderItems.length?DELIVERY_FEE.toLocaleString('ko-KR')+'원':'0원'}</strong></div>
+       <div className="sz-order-total-final"><span>최종 결제금액 <small>배송비 30,000원 포함</small></span><strong>{total.toLocaleString('ko-KR')}원</strong></div>
+     </div>
+     <p className="sz-dose-note">위 최종 결제금액은 선택 상품 총액에 배송비 30,000원을 한 번 합산한 금액입니다.</p>
      <p className="sz-order-notice">주문서 접수 후 결제 진행 방법과 링크는 별도로 안내됩니다.</p>
      <label className="sz-privacy"><input type="checkbox" checked={agree} onChange={e=>setAgree(e.target.checked)}/><span>주문서 확인 및 연락을 위한 개인정보(이름·연락처·배송지·선택 용량) 수집·이용에 동의합니다. 접수 정보는 90일간 보관합니다.</span></label>
      <p className="sz-pg-notice" role="note">PG 카드결제 링크는 결제사 자동발송 연동 완료 후 주문서 접수와 동시에 발송됩니다.</p>

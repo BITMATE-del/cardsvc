@@ -50,3 +50,10 @@ alter table consultations add column if not exists delivery_address text;
 alter table consultations add column if not exists selected_dose text;
 alter table consultations add column if not exists reference_price integer;
 alter table consultations add column if not exists request_type text not null default 'consultation';
+
+-- Multiple items, shipping-inclusive order totals and recoverable removal of completed orders.
+alter table consultations add column if not exists order_items jsonb;
+alter table consultations add column if not exists shipping_fee integer;
+alter table consultations add column if not exists total_amount integer;
+alter table consultations add column if not exists deleted_at timestamptz;
+create index if not exists idx_consultations_active_created on consultations(created_at desc) where deleted_at is null;
