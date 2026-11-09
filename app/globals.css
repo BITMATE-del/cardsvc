@@ -159,3 +159,28 @@
 .sz-dose-note{color:#647782;font-size:12px;line-height:1.65;margin:12px 0}
 .sz-order-notice{border-left:3px solid #177f82;background:#f5f8f8;padding:14px 16px;line-height:1.7;font-size:13px;color:#314e5c;margin:16px 0 22px}
 @media(max-width:600px){.sz-dose-options{grid-template-columns:1fr}}
+
+
+/* Accessible order intake: address search and single-select dose */
+.sz-consult-form-panel .sz-order-address-group{display:grid;gap:10px;margin-bottom:23px;min-width:0}
+.sz-order-address-group>label{margin-bottom:0;font-size:14px;font-weight:700;color:#102b40}
+.sz-order-address-group>label span,.sz-dose-select-label>span{color:#177f82}
+.sz-consult-form-panel .sz-order-address-group input{margin:0;min-height:49px}
+.sz-consult-form-panel .sz-order-address-group input[readonly]{background:#f7fafb;color:#344d59;cursor:pointer}
+.sz-address-search-row{display:grid;grid-template-columns:minmax(0,1fr) 145px;gap:10px}
+.sz-consult-form-panel .sz-postcode-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#102b40;color:#fff;font-size:13px;font-weight:750;border:0;border-radius:5px;cursor:pointer;min-height:49px}
+.sz-consult-form-panel .sz-postcode-btn:hover{background:#177f82}
+.sz-consult-form-panel .sz-dose-select-label{display:block;min-width:0;margin:0}
+.sz-dose-select-label select{appearance:auto;display:block;width:100%;max-width:100%;margin-top:10px;padding:15px 14px;min-height:54px;border:1px solid #dce5e7;background:#fff;border-radius:5px;color:#102b40;font-size:15px;line-height:1.5;cursor:pointer}
+.sz-dose-select-label select:focus-visible,.sz-order-address-group input:focus-visible{outline:2px solid #177f82;outline-offset:2px}
+.sz-selected-price{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;margin:13px 0 0;padding:14px 16px;background:#f0f8f6;border:1px solid #c8e3de;border-radius:5px}
+.sz-selected-price span{display:flex;flex-direction:column;gap:4px;font-size:11px;color:#617b83}
+.sz-selected-price strong{font-size:15px;color:#102b40}
+.sz-address-modal-backdrop{position:fixed;inset:0;z-index:1200;background:rgba(6,25,37,.68);display:flex;align-items:center;justify-content:center;padding:16px}
+.sz-address-modal{background:#fff;border-radius:9px;width:min(100%,530px);max-height:calc(100dvh - 32px);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.sz-address-modal header{display:flex;align-items:center;justify-content:space-between;padding:16px 19px;border-bottom:1px solid #dce5e7}
+.sz-address-modal header div{display:flex;align-items:center;gap:10px;color:#102b40}
+.sz-address-modal header button{background:transparent;border:0;color:#102b40;cursor:pointer;padding:6px}
+.sz-address-modal .sz-postcode-embed{height:min(68dvh,550px);min-height:310px;width:100%}
+.sz-address-modal .sz-form-error{margin:10px 18px}
+@media(max-width:600px){.sz-address-search-row{grid-template-columns:minmax(0,1fr) 124px}.sz-selected-price{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sz-address-modal-backdrop{padding:8px}.sz-address-modal .sz-postcode-embed{height:70dvh;min-height:300px}}
