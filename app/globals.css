@@ -136,3 +136,10 @@
 .sz-hero-promo-img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain;image-rendering:auto}
 @media(max-width:900px){.sz-hero-media>.sz-hero-promo{aspect-ratio:auto;height:auto}}
 @media(max-width:650px){.sz-hero-media>.sz-hero-promo{aspect-ratio:auto;height:auto}}
+
+/* Customer review date editing */
+.sz-review-date-editor{display:flex;gap:10px;align-items:end;flex-wrap:wrap;padding:14px 0}
+.sz-review-date-editor label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#526b78}
+.sz-review-date-editor input{padding:10px 12px;border:1px solid #dce5e7;border-radius:5px;color:#102b40;min-height:42px}
+.sz-review-date-editor button{min-height:42px;padding:9px 15px}
+@media(max-width:600px){.sz-review-date-editor{align-items:stretch}.sz-review-date-editor label,.sz-review-date-editor button{width:100%}}

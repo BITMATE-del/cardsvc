@@ -41,3 +41,6 @@ create table if not exists customer_reviews(
  reviewed_at timestamptz
 );
 create index if not exists idx_customer_reviews_status on customer_reviews(status,created_at desc);
+
+-- Customer-facing review date override; original created_at is preserved for audit.
+alter table customer_reviews add column if not exists display_date date;
