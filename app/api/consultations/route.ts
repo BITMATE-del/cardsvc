@@ -15,7 +15,7 @@ export async function POST(req:NextRequest){
   if(!input||typeof input!=='object'||Array.isArray(input))return error('주문 품목 형식을 확인해 주세요.',400);
   const item=input as Record<string,unknown>;
   const dose=item.dose,quantity=item.quantity;
-  if(typeof dose!=='string'||!Object.prototype.hasOwnProperty.call(prices,dose)||seen.has(dose)||!Number.isInteger(quantity)||Number(quantity)<1||Number(quantity)>10)return error('용량 또는 수량을 확인해 주세요.',400);
+  if(typeof dose!=='string'||!Object.prototype.hasOwnProperty.call(prices,dose)||seen.has(dose)||typeof quantity!=='number'||!Number.isInteger(quantity)||quantity<1||quantity>10)return error('용량 또는 수량을 확인해 주세요.',400);
   seen.add(dose);items.push({dose,quantity:quantity as number,unitPrice:prices[dose],amount:prices[dose]*(quantity as number)});
  }
  const subtotal=items.reduce((sum,item)=>sum+item.amount,0);
