@@ -57,3 +57,15 @@ alter table consultations add column if not exists shipping_fee integer;
 alter table consultations add column if not exists total_amount integer;
 alter table consultations add column if not exists deleted_at timestamptz;
 create index if not exists idx_consultations_active_created on consultations(created_at desc) where deleted_at is null;
+
+-- Anonymous visitor analytics, tracked only from deployment onward
+create table if not exists site_pageviews(
+ id bigserial primary key,
+ visitor_id uuid not null,
+ path text not null default '/',
+ referrer text,
+ device text not null default 'unknown',
+ visited_at timestamptz not null default now()
+);
+create index if not exists idx_site_pageviews_visited on site_pageviews(visited_at desc);
+create index if not exists idx_site_pageviews_visitor on site_pageviews(visitor_id,visited_at desc);
