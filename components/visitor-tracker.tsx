@@ -8,7 +8,7 @@ export function VisitorTracker(){
  useEffect(()=>{
   const path=pathname||'/';
   if(path.startsWith('/admin')||path.startsWith('/staff-login')||path.startsWith('/api')||sentPath.current===path)return;
-  if(navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
+  if((navigator as Navigator & {doNotTrack?:string}).doNotTrack==='1')return;
   sentPath.current=path;
   try{
    let visitorId=sessionStorage.getItem(KEY);
