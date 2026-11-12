@@ -23,7 +23,10 @@ async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
    '💳 결제 예정금액: '+order.totalAmount.toLocaleString('ko-KR')+'원 (배송비 30,000원 포함)',
    '',
    '🔎 관리자 주문 확인',
-   'https://cardsvc.vercel.app/admin/consultations'
+   'https://cardsvc.vercel.app/admin/consultations',
+   '',
+   '💳 결제링크',
+   'https://www.dahaepay.com/seller/create'
   ];
   const results=await Promise.allSettled(chats.map(async chat=>{
    const response=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
