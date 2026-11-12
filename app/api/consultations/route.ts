@@ -2,6 +2,44 @@ import {NextRequest,NextResponse} from 'next/server';import {database,isAdmin} f
 export const dynamic='force-dynamic';
 const error=(message:string,status:number)=>NextResponse.json({error:message},{status});
 const prices:Record<string,number>={'2.5mg':95000,'5mg':130000,'7.5mg':190000,'10mg':250000,'12.5mg':300000,'15mg':360000};
+type OrderNotification={
+ id:string;name:string;phone:string;items:{dose:string;quantity:number}[];totalAmount:number;
+};
+export async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
+ const token=process.env.SUSHIJARO_TELEGRAM_BOT_TOKEN?.trim();
+ const chatId=process.env.SUSHIJARO_TELEGRAM_CHAT_ID?.trim();
+ if(!token||!chatId)return false;
+ const threadRaw=process.env.SUSHIJARO_TELEGRAM_THREAD_ID?.trim();
+ const threadId=threadRaw&&/^\d+$/.test(threadRaw)?Number(threadRaw):undefined;
+ const lines=[
+  '🔔 새 주문서가 도착했습니다!',
+  '',
+  '🧾 주문번호: '+order.id.slice(0,8).toUpperCase(),
+  '👤 주문자: '+order.name,
+  '📞 연락처: '+order.phone,
+  '📦 주문상품:',
+  ...order.items.map(x=>'  · '+x.dose+' × '+x.quantity+'개'),
+  '💳 결제 예정금액: '+order.totalAmount.toLocaleString('ko-KR')+'원 (배송비 30,000원 포함)',
+  '',
+  '🔎 관리자 주문 확인',
+  'https://cardsvc.vercel.app/admin/consultations'
+ ];
+ try{
+  const response=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+    chat_id:chatId,text:lines.join('\n'),disable_notification:false,protect_content:true,
+    ...(threadId?{message_thread_id:threadId}:{})
+   }),
+   cache:'no-store',signal:AbortSignal.timeout(7000)
+  });
+  if(!response.ok){console.error('SUSHIJARO_TELEGRAM_SEND_FAILED',response.status);return false;}
+  const json:{ok?:boolean}=await response.json();
+  return json.ok===true;
+ }catch(e){console.error('SUSHIJARO_TELEGRAM_SEND_ERROR',e instanceof Error?e.name:'unknown');return false;}
+}
+
 export async function POST(req:NextRequest){
  let data:Record<string,unknown>;try{data=await req.json()}catch{return error('입력 내용을 확인해 주세요.',400)}
  if(data.website)return NextResponse.json({ok:true});
@@ -24,8 +62,12 @@ export async function POST(req:NextRequest){
  const summary=items.map(i=>i.dose+' × '+i.quantity+'개').join(', ');
  const sql=database();if(!sql)return error('주문서 접수 서비스가 준비되지 않았습니다.',503);
  try{
-  await sql`insert into consultations(name,phone,message,delivery_address,selected_dose,reference_price,request_type,status,order_items,shipping_fee,total_amount)
-   values(${name},${phone},${'주문 접수'},${address},${summary},${subtotal},'order','new',${JSON.stringify(items)}::jsonb,${shippingFee},${totalAmount})`;
+  const inserted=await sql`insert into consultations(name,phone,message,delivery_address,selected_dose,reference_price,request_type,status,order_items,shipping_fee,total_amount)
+   values(${name},${phone},${'주문 접수'},${address},${summary},${subtotal},'order','new',${JSON.stringify(items)}::jsonb,${shippingFee},${totalAmount})
+   returning id`;
+  // Notify only after a successfully saved order; Telegram failure must not cancel the order.
+  const notified=await notifyNewOrder({id:String(inserted[0].id),name,phone,items,totalAmount});
+  if(!notified)console.warn('SUSHIJARO_ORDER_SAVED_WITHOUT_TELEGRAM_DELIVERY');
   return NextResponse.json({ok:true,totalAmount,shippingFee},{status:201});
  }catch{return error('접수에 실패했습니다.',503)}
 }
