@@ -5,7 +5,7 @@ const prices:Record<string,number>={'2.5mg':95000,'5mg':130000,'7.5mg':190000,'1
 type OrderNotification={
  id:string;name:string;phone:string;items:{dose:string;quantity:number}[];totalAmount:number;
 };
-export async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
+async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
  const token=process.env.SUSHIJARO_TELEGRAM_BOT_TOKEN?.trim();
  const chatId=process.env.SUSHIJARO_TELEGRAM_CHAT_ID?.trim();
  if(!token||!chatId)return false;
