@@ -28,7 +28,7 @@ async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
   const results=await Promise.allSettled(chats.map(async chat=>{
    const response=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({chat_id:String(chat.chat_id),text:lines.join('\\n'),disable_notification:false,protect_content:true}),
+    body:JSON.stringify({chat_id:String(chat.chat_id),text:lines.join(String.fromCharCode(10)),disable_notification:false,protect_content:true}),
     cache:'no-store',signal:AbortSignal.timeout(7000)
    });
    return response.ok;

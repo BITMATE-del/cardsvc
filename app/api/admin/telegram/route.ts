@@ -14,9 +14,10 @@ async function collectPairings(token:string){
  for(const item of payload.result){
   const msg=item.message;
   if(msg?.chat?.type!=='private'||!Number.isSafeInteger(msg.chat.id))continue;
-  const match=msg.text?.trim().match(/^\\/start(?:@msgmsgazlk_bot)?\\s+([a-f0-9]{24})$/i);
-  if(!match)continue;
-  const code=match[1].toLowerCase();
+  const tokens=(msg.text||'').trim().split(' ');
+  const command=tokens[0]?.split('@')[0];
+  const code=tokens.length===2&&command==='/start'&&/^[a-f0-9]{24}$/i.test(tokens[1])?tokens[1].toLowerCase():null;
+  if(!code)continue;
   const rows=await sql`update admin_telegram_pairings set chat_id=${msg.chat.id}
     where code=${code} and chat_id is null and expires_at>now() returning code`;
   if(rows.length){
