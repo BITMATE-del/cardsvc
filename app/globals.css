@@ -235,3 +235,12 @@
 .sz-analytics-table th,.sz-analytics-table td{padding:13px 10px;border-bottom:1px solid #dce5e7;color:#304a58}
 .sz-analytics-table th{background:#f5f8f8;color:#102b40;white-space:nowrap}
 @media(max-width:760px){.sz-analytics-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sz-analytics-stats>div{padding:17px}.sz-analytics-stats strong{font-size:24px}.sz-analytics-bars{gap:7px}.sz-analytics-day>small{font-size:9px}}
+
+
+/* Persistent administrator new-order sound notifications */
+.sz-order-alert-widget{position:fixed;z-index:1100;right:18px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(390px,calc(100vw - 36px))}
+.sz-order-alert-toggle,.sz-order-alert-new{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #177f82;border-radius:7px;background:#102b40;color:white;padding:11px 15px;font-size:12px;font-weight:700;box-shadow:0 5px 20px rgba(0,0,0,.12);cursor:pointer}
+.sz-order-alert-new{background:#177f82;text-decoration:none}
+.sz-order-alert-toast{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:14px 16px;background:#fff;color:#102b40;border:1px solid #c9dfe1;border-left:4px solid #177f82;box-shadow:0 8px 28px rgba(0,0,0,.16);border-radius:7px;font-size:13px;font-weight:600;line-height:1.5}
+.sz-order-alert-toast button{border:0;background:transparent;color:#102b40;padding:3px;flex:none}
+@media(max-width:650px){.sz-order-alert-widget{right:10px;bottom:10px;max-width:calc(100vw - 20px)}}
