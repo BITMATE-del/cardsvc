@@ -65,7 +65,7 @@ export function AdminOrderAlerts(){
   return()=>{window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);void audio.current?.close();audio.current=null};
  },[]);
  async function toggle(){
-  const next=!enabled;
+  const next=!(enabled&&ready);
   setEnabled(next);enabledRef.current=next;
   localStorage.setItem(SOUND_KEY,next?'on':'off');
   if(next){
