@@ -1,0 +1,1 @@
+import {AdminTelegramSettings} from '@/components/admin-telegram-settings';export const dynamic='force-dynamic';export default function Page(){return <AdminTelegramSettings/>}

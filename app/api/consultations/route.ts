@@ -7,36 +7,33 @@ type OrderNotification={
 };
 async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
  const token=process.env.SUSHIJARO_TELEGRAM_BOT_TOKEN?.trim();
- const chatId=process.env.SUSHIJARO_TELEGRAM_CHAT_ID?.trim();
- if(!token||!chatId)return false;
- const threadRaw=process.env.SUSHIJARO_TELEGRAM_THREAD_ID?.trim();
- const threadId=threadRaw&&/^\d+$/.test(threadRaw)?Number(threadRaw):undefined;
- const lines=[
-  '🔔 새 주문서가 도착했습니다!',
-  '',
-  '🧾 주문번호: '+order.id.slice(0,8).toUpperCase(),
-  '👤 주문자: '+order.name,
-  '📞 연락처: '+order.phone,
-  '📦 주문상품:',
-  ...order.items.map(x=>'  · '+x.dose+' × '+x.quantity+'개'),
-  '💳 결제 예정금액: '+order.totalAmount.toLocaleString('ko-KR')+'원 (배송비 30,000원 포함)',
-  '',
-  '🔎 관리자 주문 확인',
-  'https://cardsvc.vercel.app/admin/consultations'
- ];
+ if(!token)return false;
+ const sql=database();if(!sql)return false;
  try{
-  const response=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({
-    chat_id:chatId,text:lines.join('\n'),disable_notification:false,protect_content:true,
-    ...(threadId?{message_thread_id:threadId}:{})
-   }),
-   cache:'no-store',signal:AbortSignal.timeout(7000)
-  });
-  if(!response.ok){console.error('SUSHIJARO_TELEGRAM_SEND_FAILED',response.status);return false;}
-  const json:{ok?:boolean}=await response.json();
-  return json.ok===true;
+  const chats=await sql`select chat_id from admin_telegram_chats where active=true limit 30`;
+  if(!chats.length)return false;
+  const lines=[
+   '🔔 새 주문서가 도착했습니다!',
+   '',
+   '🧾 주문번호: '+order.id.slice(0,8).toUpperCase(),
+   '👤 주문자: '+order.name,
+   '📞 연락처: '+order.phone,
+   '📦 주문상품:',
+   ...order.items.map(x=>'  · '+x.dose+' × '+x.quantity+'개'),
+   '💳 결제 예정금액: '+order.totalAmount.toLocaleString('ko-KR')+'원 (배송비 30,000원 포함)',
+   '',
+   '🔎 관리자 주문 확인',
+   'https://cardsvc.vercel.app/admin/consultations'
+  ];
+  const results=await Promise.allSettled(chats.map(async chat=>{
+   const response=await fetch('https://api.telegram.org/bot'+token+'/sendMessage',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:String(chat.chat_id),text:lines.join('\\n'),disable_notification:false,protect_content:true}),
+    cache:'no-store',signal:AbortSignal.timeout(7000)
+   });
+   return response.ok;
+  }));
+  return results.some(x=>x.status==='fulfilled'&&x.value===true);
  }catch(e){console.error('SUSHIJARO_TELEGRAM_SEND_ERROR',e instanceof Error?e.name:'unknown');return false;}
 }
 

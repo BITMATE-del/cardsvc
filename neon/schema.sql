@@ -69,3 +69,7 @@ create table if not exists site_pageviews(
 );
 create index if not exists idx_site_pageviews_visited on site_pageviews(visited_at desc);
 create index if not exists idx_site_pageviews_visitor on site_pageviews(visitor_id,visited_at desc);
+
+-- Administrator-approved Telegram subscription (do not save bot tokens in DB).
+create table if not exists admin_telegram_chats(chat_id bigint primary key,username text,connected_at timestamptz not null default now(),active boolean not null default true);
+create table if not exists admin_telegram_pairings(code text primary key,created_at timestamptz not null default now(),expires_at timestamptz not null default now()+ interval '15 minutes',chat_id bigint);
