@@ -5,13 +5,25 @@ export const dynamic='force-dynamic';
 const response=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const BOT_USERNAME='postmemenu_bot';
 type TelegramUpdate={message?:{text?:string;chat?:{id:number;type:string};from?:{username?:string}}};
+async function telegramCall<T>(token:string,method:string):Promise<T>{
+ let res:Response;
+ try{res=await fetch('https://api.telegram.org/bot'+token+'/'+method,{cache:'no-store',signal:AbortSignal.timeout(6500)})}
+ catch{throw Error('텔레그램 서버 통신이 실패했습니다. 잠시 후 다시 확인해 주세요.')}
+ if(res.status===401||res.status===404)throw Error('설정된 봇 토큰을 인증할 수 없습니다. Vercel 환경변수와 재배포 여부를 확인해 주세요.');
+ if(res.status===409)throw Error('다른 프로그램이 이 봇의 메시지를 받고 있거나 웹훅이 연결되어 있습니다. 동일 봇의 중복 연결을 확인해 주세요.');
+ if(res.status===429)throw Error('텔레그램 요청이 너무 많습니다. 잠시 후 새로고침해 주세요.');
+ if(!res.ok)throw Error('텔레그램 연결 오류 (HTTP '+res.status+')');
+ const result:{ok:boolean;result?:T;description?:string}=await res.json();
+ if(!result.ok||result.result===undefined)throw Error('텔레그램 응답 오류');
+ return result.result;
+}
 async function collectPairings(token:string){
- const sql=database();if(!sql)return;
- const res=await fetch('https://api.telegram.org/bot'+token+'/getUpdates?limit=100&timeout=0&allowed_updates=%5B%22message%22%5D',{cache:'no-store',signal:AbortSignal.timeout(5500)});
- if(!res.ok)throw Error('텔레그램 봇 응답 오류');
- const payload:{ok:boolean;result?:TelegramUpdate[]}=await res.json();
- if(!payload.ok||!Array.isArray(payload.result))throw Error('봇 메시지를 확인할 수 없습니다.');
- for(const item of payload.result){
+ const me=await telegramCall<{username?:string}>(token,'getMe');
+ if(me.username?.toLowerCase()!==BOT_USERNAME)throw Error('현재 설정된 토큰의 봇(@'+(me.username||'알 수 없음')+')이 @'+BOT_USERNAME+'과 다릅니다.');
+ const sql=database();if(!sql)throw Error('DB 연결 실패');
+ const updates=await telegramCall<TelegramUpdate[]>(token,'getUpdates?limit=100&timeout=0&allowed_updates=%5B%22message%22%5D');
+ if(!Array.isArray(updates))throw Error('봇 메시지 응답 형식 오류');
+ for(const item of updates){
   const msg=item.message;
   if(msg?.chat?.type!=='private'||!Number.isSafeInteger(msg.chat.id))continue;
   const tokens=(msg.text||'').trim().split(' ');
@@ -32,7 +44,7 @@ export async function GET(req:NextRequest){
  const sql=database();if(!sql)return response({error:'DB 연결 실패'},503);
  const token=process.env.SUSHIJARO_TELEGRAM_BOT_TOKEN?.trim();
  let warning='';
- if(token){try{await collectPairings(token)}catch{warning='텔레그램 연결 상태를 확인할 수 없습니다.'}}
+ if(token){try{await collectPairings(token)}catch(e){warning=e instanceof Error?e.message:'텔레그램 연결 확인에 실패했습니다.'}}
  else warning='Vercel에 텔레그램 봇 토큰이 아직 등록되지 않았습니다.';
  const code=req.nextUrl.searchParams.get('code');
  try{
