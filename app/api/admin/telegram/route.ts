@@ -3,7 +3,7 @@ import {randomBytes} from 'node:crypto';
 import {database,isAdmin} from '@/lib/db';
 export const dynamic='force-dynamic';
 const response=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
-const BOT_USERNAME='msgmsgazlk_bot';
+const BOT_USERNAME='postmemenu_bot';
 type TelegramUpdate={message?:{text?:string;chat?:{id:number;type:string};from?:{username?:string}}};
 async function collectPairings(token:string){
  const sql=database();if(!sql)return;
@@ -21,9 +21,9 @@ async function collectPairings(token:string){
   const rows=await sql`update admin_telegram_pairings set chat_id=${msg.chat.id}
     where code=${code} and chat_id is null and expires_at>now() returning code`;
   if(rows.length){
-   await sql`insert into admin_telegram_chats(chat_id,username,active)
-    values(${msg.chat.id},${msg.from?.username||null},true)
-    on conflict(chat_id) do update set username=excluded.username,active=true`;
+   await sql`insert into admin_telegram_chats(chat_id,username,active,bot_username)
+    values(${msg.chat.id},${msg.from?.username||null},true,${BOT_USERNAME})
+    on conflict(chat_id) do update set username=excluded.username,active=true,bot_username=excluded.bot_username`;
   }
  }
 }
@@ -36,7 +36,7 @@ export async function GET(req:NextRequest){
  else warning='Vercel에 텔레그램 봇 토큰이 아직 등록되지 않았습니다.';
  const code=req.nextUrl.searchParams.get('code');
  try{
-  const chats=await sql`select chat_id,username,connected_at from admin_telegram_chats where active=true order by connected_at desc limit 30`;
+  const chats=await sql`select chat_id,username,connected_at from admin_telegram_chats where active=true and bot_username=${BOT_USERNAME} order by connected_at desc limit 30`;
   const pairing=code&&/^[a-f0-9]{24}$/.test(code)
    ?await sql`select chat_id,expires_at from admin_telegram_pairings where code=${code} limit 1`:[];
   return response({configured:!!token,chats:chats.map(row=>({chat_id:String(row.chat_id),username:row.username,connected_at:row.connected_at})),paired:!!pairing.length&&!!pairing[0].chat_id,warning});

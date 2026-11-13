@@ -10,7 +10,7 @@ async function notifyNewOrder(order:OrderNotification):Promise<boolean>{
  if(!token)return false;
  const sql=database();if(!sql)return false;
  try{
-  const chats=await sql`select chat_id from admin_telegram_chats where active=true limit 30`;
+  const chats=await sql`select chat_id from admin_telegram_chats where active=true and bot_username='postmemenu_bot' limit 30`;
   if(!chats.length)return false;
   const lines=[
    '🔔 새 주문서가 도착했습니다!',

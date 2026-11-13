@@ -29,7 +29,7 @@ export function AdminTelegramSettings(){
   <div className="admin-toolbar"><div><span className="section-kicker">SUSHIJARO ADMIN</span><h1>텔레그램 주문 알림</h1><p className="small">승인된 관리자에게만 새 주문서 접수 알림을 발송합니다.</p></div><a href="/admin" className="mutedBtn">관리자 홈</a></div>
   {error&&<p className="alert" role="alert">{error}</p>}{notice&&<p className="admin-badge" role="status">{notice}</p>}
   {status?.warning&&<p className="alert" role="alert">{status.warning}</p>}
-  <section className="sz-tg-settings"><div className="sz-tg-settings-head"><Bell size={20}/><h2>봇 알림 받을 관리자 등록</h2></div>
+  <section className="sz-tg-settings"><div className="sz-tg-settings-head"><Bell size={20}/><h2>새 봇 (@postmemenu_bot) 관리자 등록</h2></div>
    <p>채팅 ID를 직접 입력할 필요 없이, 관리자 전용 연결 링크를 발급해 봇에서 시작하면 연결됩니다. 15분 뒤 링크는 만료됩니다.</p>
    <button type="button" disabled={busy||!status?.configured} onClick={()=>void connect()}><Link2 size={16}/> 관리자 봇 연결하기</button>
    {link&&<div className="sz-tg-connect"><a href={link} target="_blank" rel="noopener noreferrer">텔레그램 봇에서 연결 승인</a><p className="small">버튼을 누른 후 텔레그램에서 시작을 누르면 자동 등록됩니다.</p></div>}

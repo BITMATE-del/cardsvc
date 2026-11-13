@@ -73,3 +73,7 @@ create index if not exists idx_site_pageviews_visitor on site_pageviews(visitor_
 -- Administrator-approved Telegram subscription (do not save bot tokens in DB).
 create table if not exists admin_telegram_chats(chat_id bigint primary key,username text,connected_at timestamptz not null default now(),active boolean not null default true);
 create table if not exists admin_telegram_pairings(code text primary key,created_at timestamptz not null default now(),expires_at timestamptz not null default now()+ interval '15 minutes',chat_id bigint);
+
+-- Bot migration: preserve legacy subscribers separately until they re-join the replacement bot.
+alter table admin_telegram_chats add column if not exists bot_username text not null default 'msgmsgazlk_bot';
+create index if not exists idx_admin_telegram_bot_active on admin_telegram_chats(bot_username,active);
