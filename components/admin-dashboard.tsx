@@ -2,6 +2,7 @@
 import {useCallback,useEffect,useMemo,useState,type FormEvent} from 'react';
 import {useRouter} from 'next/navigation';
 import {LANDING_FIELDS,LANDING_DEFAULTS} from '@/lib/landing-fields';
+import {normalizeTelegramLink} from '@/lib/telegram-link';
 import {RefreshCw,Save,Search,LogOut,FileText,Inbox,Type,BarChart3,Bell} from 'lucide-react';
 type Section={id:string;eyebrow:string;title:string;body:string;icon:string;sort_order:number;is_published:boolean;placement:'service'|'shipping'};
 type CustomerReview={id:string;nickname:string;rating:number;title:string;body:string;status:'pending'|'approved'|'rejected';created_at:string;display_date:string|null;shown_date:string};
@@ -15,21 +16,16 @@ useEffect(()=>{void refresh()},[refresh]);
 const changed=useMemo(()=>LANDING_FIELDS.filter(f=>values[f.key]!==saved[f.key]),[values,saved]);
 const shown=useMemo(()=>LANDING_FIELDS.filter(f=>(group==='전체'||f.group===group)&&(!filter||f.label.toLowerCase().includes(filter.toLowerCase())||f.defaultValue.toLowerCase().includes(filter.toLowerCase())||f.key.includes(filter.toLowerCase()))),[group,filter]);
 async function saveConsultLink(){
- const link=values.telegram_consult_link?.trim()||'';
+ const link=normalizeTelegramLink(values.telegram_consult_link||'');
  const label=values.telegram_consult_label?.trim()||'';
- let valid=false;
- try{
-  const parsed=new URL(link);
-  valid=parsed.protocol==='https:'&&['t.me','telegram.me','www.t.me','www.telegram.me'].includes(parsed.hostname.toLowerCase())&&parsed.pathname.startsWith('/')&&parsed.pathname.length>1&&parsed.pathname.slice(1).split('/').every(part=>/^[A-Za-z0-9_+-]+$/.test(part))&&!parsed.search&&!parsed.hash;
- }catch{}
- if(!valid){setErr('텔레그램 상담 주소를 https://t.me/아이디 형태로 입력해 주세요.');return}
+ if(!link){setErr('텔레그램 아이디(@아이디) 또는 https://t.me/아이디 주소를 입력해 주세요.');return}
  if(!label||label.length>25){setErr('버튼 문구를 1~25자로 입력해 주세요.');return}
  setBusy(true);setErr('');setNotice('');
  try{
   await request('/api/site-copy','PUT',{entries:[{key:'telegram_consult_link',value:link},{key:'telegram_consult_label',value:label}]});
   setValues(v=>({...v,telegram_consult_link:link,telegram_consult_label:label}));
   setSaved(v=>({...v,telegram_consult_link:link,telegram_consult_label:label}));
-  setNotice('텔레그램 상담 링크와 버튼 문구가 저장되었습니다.');
+  setNotice('상담 링크를 저장했습니다. 홈페이지 새로고침 시 반영됩니다.');
  }catch(e){setErr(e instanceof Error?e.message:'상담 링크 저장 실패')}
  finally{setBusy(false)}
 }
@@ -49,7 +45,7 @@ return <main className="admin"><div className="panel"><div className="admin-tool
 {tab==='texts'&&<><section className="sz-admin-consult-link">
   <div><strong>텔레그램 상담 바로가기 설정</strong><p className="small">홈페이지 오른쪽 하단에 표시되는 상담 버튼의 연결 계정과 문구를 변경합니다. 주문 접수 알림 봇과는 별도 설정입니다.</p></div>
   <div className="sz-admin-consult-grid">
-   <label>연결할 텔레그램 주소<input type="url" value={values.telegram_consult_link||''} placeholder="https://t.me/아이디" onChange={e=>setValues(v=>({...v,telegram_consult_link:e.target.value}))}/></label>
+   <label>연결할 텔레그램 아이디 또는 주소<input type="text" value={values.telegram_consult_link||''} placeholder="@아이디 또는 https://t.me/아이디" onChange={e=>setValues(v=>({...v,telegram_consult_link:e.target.value}))}/></label>
    <label>버튼 문구<input type="text" maxLength={25} value={values.telegram_consult_label||''} placeholder="텔레그램 상담" onChange={e=>setValues(v=>({...v,telegram_consult_label:e.target.value}))}/></label>
   </div>
   <div className="sz-admin-consult-actions"><button type="button" disabled={busy||!(values.telegram_consult_link!==saved.telegram_consult_link||values.telegram_consult_label!==saved.telegram_consult_label)} onClick={()=>void saveConsultLink()}><Save size={15}/> 상담 버튼 설정 저장</button></div>
