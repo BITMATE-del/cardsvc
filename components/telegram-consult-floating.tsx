@@ -4,7 +4,7 @@ export function TelegramConsultFloating({url,label}:{url:string;label:string}){
  try{
   const parsed=new URL(url);
   if(parsed.protocol==='https:'&&['t.me','telegram.me','www.t.me','www.telegram.me'].includes(parsed.hostname.toLowerCase())
-   &&/^\\/[A-Za-z0-9_+\\/-]+$/.test(parsed.pathname)&&!parsed.search&&!parsed.hash)
+   &&parsed.pathname.startsWith('/')&&parsed.pathname.length>1&&parsed.pathname.slice(1).split('/').every(part=>/^[A-Za-z0-9_+-]+$/.test(part))&&!parsed.search&&!parsed.hash)
     target=parsed.href;
  }catch{}
  if(!target)return null;

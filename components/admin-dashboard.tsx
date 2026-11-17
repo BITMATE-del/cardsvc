@@ -20,7 +20,7 @@ async function saveConsultLink(){
  let valid=false;
  try{
   const parsed=new URL(link);
-  valid=parsed.protocol==='https:'&&['t.me','telegram.me','www.t.me','www.telegram.me'].includes(parsed.hostname.toLowerCase())&&/^\\/[A-Za-z0-9_+\\/-]+$/.test(parsed.pathname)&&!parsed.search&&!parsed.hash;
+  valid=parsed.protocol==='https:'&&['t.me','telegram.me','www.t.me','www.telegram.me'].includes(parsed.hostname.toLowerCase())&&parsed.pathname.startsWith('/')&&parsed.pathname.length>1&&parsed.pathname.slice(1).split('/').every(part=>/^[A-Za-z0-9_+-]+$/.test(part))&&!parsed.search&&!parsed.hash;
  }catch{}
  if(!valid){setErr('텔레그램 상담 주소를 https://t.me/아이디 형태로 입력해 주세요.');return}
  if(!label||label.length>25){setErr('버튼 문구를 1~25자로 입력해 주세요.');return}
